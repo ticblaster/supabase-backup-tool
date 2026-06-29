@@ -1,5 +1,7 @@
 # Autor e suporte
 
+> **Languages:** [Português](AUTHORS.md) · [English](docs/en/author-license-support.md)
+
 ## Autor original
 
 **Marcelo Ribeiro de Oliveira Mello**

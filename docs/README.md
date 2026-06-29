@@ -1,5 +1,7 @@
 # Documentação — supabase-backup-tool
 
+> **Idiomas:** [Português (Brasil)](README.md) · [English](README.en.md)
+
 Índice da documentação da ferramenta de backup lógico para projetos Supabase.
 
 ## Guias

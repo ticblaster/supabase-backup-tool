@@ -1,5 +1,7 @@
 # supabase-backup-tool
 
+> **Idiomas:** [Português (Brasil)](README.md) · [English](README.en.md)
+
 CLI local para **backup lógico** de bancos **Supabase** (Postgres) e cópia dos arquivos dos **buckets de Storage** — pensada para desenvolvedores que precisam proteger homologação, clonar ambientes ou guardar evidências antes de mudanças arriscadas.
 
 Suporta **vários projetos Supabase** na mesma instalação via `backup.config.json`.
@@ -152,10 +154,19 @@ npm run test               # testes unitários
 
 ## Documentação completa
 
+**Português**
+
 - [Índice da documentação](./docs/README.md)
 - [Visão geral e fluxo](./docs/visao-geral.md)
-- [Instalação e configuração](./docs/instalacao-e-configuracao.md)
+- [Guia rápido](./docs/guia-rapido-desenvolvedor.md)
 - [Autor, licença e suporte](./docs/autor-licenca-e-suporte.md)
+
+**English**
+
+- [Documentation index](./docs/README.en.md)
+- [Overview](./docs/en/overview.md)
+- [Quick start](./docs/en/quick-start-developer.md)
+- [Author, license & support](./docs/en/author-license-support.md)
 
 ---
 
