@@ -1,5 +1,7 @@
 # Autor, licença e suporte
 
+> **Idiomas:** [English](./en/author-license-support.md) · [Português (Brasil)](autor-licenca-e-suporte.md)
+
 ## Autor original
 
 | Campo | Valor |

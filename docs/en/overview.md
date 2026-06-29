@@ -1,6 +1,6 @@
 # Overview
 
-> **Languages:** [English](../README.en.md) · [Português (Brasil)](../visao-geral.md)
+> **Languages:** [English](overview.md) · [Português (Brasil)](../visao-geral.md)
 
 ## Who this is for
 

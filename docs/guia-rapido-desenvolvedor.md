@@ -1,5 +1,7 @@
 # Guia rápido para desenvolvedores
 
+> **Idiomas:** [English](./en/quick-start-developer.md) · [Português (Brasil)](guia-rapido-desenvolvedor.md)
+
 Referência de uma página: problema, solução e uso mínimo.
 
 ## Problema em uma frase

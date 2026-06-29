@@ -1,6 +1,6 @@
 # Author, license & support
 
-> **Languages:** [English](../README.en.md) · [Português (Brasil)](../autor-licenca-e-suporte.md)
+> **Languages:** [English](author-license-support.md) · [Português (Brasil)](../autor-licenca-e-suporte.md)
 
 ## Original author
 

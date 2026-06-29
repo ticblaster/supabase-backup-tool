@@ -1,5 +1,7 @@
 # Visão geral
 
+> **Idiomas:** [English](./en/overview.md) · [Português (Brasil)](visao-geral.md)
+
 ## Para quem é esta ferramenta
 
 Desenvolvedores e equipes que usam **Supabase** e precisam de backup **local**, **repetível** e **sob controle próprio** — especialmente em homologação, ambientes de teste ou projetos no plano gratuito.

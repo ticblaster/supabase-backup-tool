@@ -1,50 +1,50 @@
 # supabase-backup-tool
 
-> **Idiomas:** [Português (Brasil)](README.md) · [English](README.en.md)
+> **Languages:** [English](README.md) · [Português (Brasil)](README.pt-BR.md)
 
-CLI local para **backup lógico** de bancos **Supabase** (Postgres) e cópia dos arquivos dos **buckets de Storage** — pensada para desenvolvedores que precisam proteger homologação, clonar ambientes ou guardar evidências antes de mudanças arriscadas.
+Local CLI for **logical backup** of **Supabase** databases (Postgres) and **Storage bucket** files — built for developers who need to protect staging environments, clone setups, or snapshot state before risky changes.
 
-Suporta **vários projetos Supabase** na mesma instalação via `backup.config.json`.
-
----
-
-## O problema
-
-Se você desenvolve com Supabase, provavelmente já passou por alguma destas situações:
-
-- O **plano gratuito** não oferece backup baixável pelo painel.
-- Você precisa de uma cópia do banco de **homologação** antes de um deploy ou migração.
-- Quer **clonar** um ambiente para testar restore sem tocar em produção.
-- Tem arquivos no **Storage** (uploads, comprovantes, documentos) que **não** entram no dump SQL do Postgres.
-- No **Windows**, `supabase db dump` pode exigir **Docker Desktop** e falhar em redes onde a conexão direta resolve só IPv6.
-
-Ou seja: o desenvolvedor fica responsável por montar um processo manual, repetível e seguro de backup.
-
-## A solução
-
-O **supabase-backup-tool** automatiza esse processo em uma CLI simples:
-
-| Etapa | O que faz |
-|-------|-----------|
-| Banco | Gera `roles.sql`, `schema.sql` e `data.sql` (engine `pgdump` ou `supabase-cli`) |
-| Storage | Copia buckets configurados via `rclone` (recomendado) ou Supabase CLI |
-| Metadados | `manifest.json` com SHA-256, URL de banco usada, avisos |
-| Restore | `restore-notes.md` com roteiro seguro (sem restore automático destrutivo) |
-| Segurança | Senhas mascaradas nos logs; `.env` e `backups/` fora do Git |
-
-Funciona **localmente**, sem interface web, e aceita **fallback entre URLs** (Session Pooler → Direct connection) quando uma rota de rede falha.
+Supports **multiple Supabase projects** in one installation via `backup.config.json`.
 
 ---
 
-## Uso básico (passo a passo)
+## The problem
 
-### 1. Pré-requisitos
+If you build on Supabase, you have probably run into this:
+
+- The **free plan** does not offer downloadable backups in the dashboard.
+- You need a **staging** database copy before deploy or migration.
+- You want to **clone** an environment and test restore without touching production.
+- **Storage** files (uploads, receipts, documents) are **not** included in Postgres SQL dumps.
+- On **Windows**, `supabase db dump` may require **Docker Desktop** and fail when direct connections resolve to IPv6 only.
+
+Developers end up responsible for a manual, repeatable, safe backup process.
+
+## The solution
+
+**supabase-backup-tool** automates that workflow in a simple CLI:
+
+| Step | What it does |
+|------|----------------|
+| Database | `roles.sql`, `schema.sql`, `data.sql` (engine `pgdump` or `supabase-cli`) |
+| Storage | Copies configured buckets via `rclone` (recommended) or Supabase CLI |
+| Metadata | `manifest.json` with SHA-256, selected DB URL, warnings |
+| Restore | `restore-notes.md` with a safe playbook (no destructive auto-restore) |
+| Security | Masked passwords in logs; `.env` and `backups/` excluded from Git |
+
+Runs **locally**, no web UI, with **URL fallback** (Session Pooler → Direct) when one network path fails.
+
+---
+
+## Basic usage
+
+### 1. Prerequisites
 
 - [Node.js](https://nodejs.org/) 18+
-- [PostgreSQL client tools](https://www.postgresql.org/download/) (`pg_dump`, `psql`) — recomendado no Windows
-- [rclone](https://rclone.org/) — se for copiar buckets de Storage
+- [PostgreSQL client tools](https://www.postgresql.org/download/) (`pg_dump`, `psql`) — recommended on Windows
+- [rclone](https://rclone.org/) — if backing up Storage buckets
 
-### 2. Instalar
+### 2. Install
 
 ```bash
 git clone https://github.com/ticblaster/supabase-backup-tool.git
@@ -52,21 +52,21 @@ cd supabase-backup-tool
 npm install
 ```
 
-### 3. Configurar
+### 3. Configure
 
 ```bash
 cp backup.config.example.json backup.config.json
 cp .env.example .env
 ```
 
-Edite o `.env` com as connection strings (nunca commite este arquivo):
+Edit `.env` with connection strings (never commit this file):
 
 ```env
-GERAL_HOMOLOGACAO_DB_URL_POOLER=postgresql://postgres.<ref>:SENHA@aws-0-sa-east-1.pooler.supabase.com:5432/postgres
-GERAL_HOMOLOGACAO_DB_URL_DIRECT=postgresql://postgres:SENHA@db.<ref>.supabase.co:5432/postgres
+GERAL_HOMOLOGACAO_DB_URL_POOLER=postgresql://postgres.<ref>:PASSWORD@aws-0-sa-east-1.pooler.supabase.com:5432/postgres
+GERAL_HOMOLOGACAO_DB_URL_DIRECT=postgresql://postgres:PASSWORD@db.<ref>.supabase.co:5432/postgres
 ```
 
-No `backup.config.json`, defina o projeto e os buckets:
+In `backup.config.json`, define the project and buckets:
 
 ```json
 {
@@ -74,7 +74,7 @@ No `backup.config.json`, defina o projeto e os buckets:
   "backupRoot": "./backups",
   "projects": {
     "geral-homologacao": {
-      "projectRef": "seu-project-ref",
+      "projectRef": "your-project-ref",
       "dbUrlEnvCandidates": [
         "GERAL_HOMOLOGACAO_DB_URL_POOLER",
         "GERAL_HOMOLOGACAO_DB_URL_DIRECT"
@@ -90,27 +90,22 @@ No `backup.config.json`, defina o projeto e os buckets:
 }
 ```
 
-### 4. Validar ambiente
+### 4. Validate
 
 ```bash
 npm run check -- --project geral-homologacao
 npm run check -- --project geral-homologacao --test-db-connection
 ```
 
-### 5. Executar backup
+### 5. Run backup
 
 ```bash
-# Backup completo (banco + storage)
 npm run backup -- --project geral-homologacao
-
-# Apenas banco
 npm run backup:db -- --project geral-homologacao
-
-# Apenas arquivos dos buckets
 npm run backup:storage -- --project geral-homologacao
 ```
 
-### 6. Resultado
+### 6. Output
 
 ```txt
 backups/geral-homologacao/20260629-161824/
@@ -121,69 +116,66 @@ backups/geral-homologacao/20260629-161824/
   logs/backup.log
 ```
 
-Para ver o roteiro de restauração de um backup existente:
-
 ```bash
 npm run restore:print -- --project geral-homologacao --backup 20260629-161824
 ```
 
 ---
 
-## Comandos principais
+## Main commands
 
 ```bash
-npm run check              # valida deps, config e variáveis de ambiente
-npm run list-projects      # lista projetos configurados
-npm run backup             # backup completo
-npm run backup:db          # apenas banco
-npm run backup:storage     # apenas buckets
-npm run restore:print      # imprime roteiro de restore
-npm run test               # testes unitários
+npm run check              # validate deps, config and env vars
+npm run list-projects      # list configured projects
+npm run backup             # full backup (db + storage)
+npm run backup:db          # database only
+npm run backup:storage     # storage only
+npm run restore:print      # print restore playbook
+npm run test               # unit tests
 ```
 
 ---
 
-## Engines de backup do banco
+## Database backup engines
 
-| Engine | Ferramentas | Docker | Quando usar |
-|--------|-------------|--------|-------------|
-| **`pgdump`** (padrão) | `pg_dump`, `pg_dumpall` | Não | Windows, backup simples, sem Docker |
-| **`supabase-cli`** | Supabase CLI | Pode exigir | Ambiente com Docker já configurado |
+| Engine | Tools | Docker | When to use |
+|--------|-------|--------|-------------|
+| **`pgdump`** (default) | `pg_dump`, `pg_dumpall` | No | Windows, simple backup, no Docker |
+| **`supabase-cli`** | Supabase CLI | May require | Docker already available |
 
 ---
 
-## Documentação completa
-
-**Português**
-
-- [Índice da documentação](./docs/README.md)
-- [Visão geral e fluxo](./docs/visao-geral.md)
-- [Guia rápido](./docs/guia-rapido-desenvolvedor.md)
-- [Autor, licença e suporte](./docs/autor-licenca-e-suporte.md)
+## Full documentation
 
 **English**
 
-- [Documentation index](./docs/README.en.md)
+- [Documentation index](./docs/README.md)
 - [Overview](./docs/en/overview.md)
-- [Quick start](./docs/en/quick-start-developer.md)
+- [Quick start for developers](./docs/en/quick-start-developer.md)
 - [Author, license & support](./docs/en/author-license-support.md)
+
+**Português (Brasil)**
+
+- [Índice da documentação](./docs/README.pt-BR.md)
+- [Visão geral](./docs/visao-geral.md)
+- [Guia rápido](./docs/guia-rapido-desenvolvedor.md)
 
 ---
 
-## Autor
+## Author
 
 **Marcelo Ribeiro de Oliveira Mello** — [ticblaster@gmail.com](mailto:ticblaster@gmail.com)
 
-Autor inicial do projeto. Disponível para suporte sobre uso, configuração e adaptação da ferramenta.
+Original author. Available for support on setup, configuration, and adoption.
 
-## Licença
+## License
 
-**MIT** — ver [LICENSE](./LICENSE). Reuso e modificação permitidos com atribuição ao autor original. Detalhes em [AUTHORS.md](./AUTHORS.md).
+**MIT** — see [LICENSE](./LICENSE). Reuse and modification allowed with attribution. Details in [AUTHORS.md](./AUTHORS.md).
 
-## Suporte
+## Support
 
 **ticblaster@gmail.com**
 
 ---
 
-**v0.1.0** — CLI local · engines `pgdump` e `supabase-cli` · fallback de URLs · sem restore automático destrutivo.
+**v0.1.0** — Local CLI · `pgdump` and `supabase-cli` engines · URL fallback · no destructive auto-restore.

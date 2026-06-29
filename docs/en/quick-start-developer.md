@@ -1,6 +1,6 @@
 # Quick start for developers
 
-> **Languages:** [English](../README.en.md) · [Português (Brasil)](../guia-rapido-desenvolvedor.md)
+> **Languages:** [English](quick-start-developer.md) · [Português (Brasil)](../guia-rapido-desenvolvedor.md)
 
 One-page reference: problem, solution, minimal usage.
 

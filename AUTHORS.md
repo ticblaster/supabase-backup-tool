@@ -1,6 +1,6 @@
 # Autor e suporte
 
-> **Languages:** [Português](AUTHORS.md) · [English](docs/en/author-license-support.md)
+> **Idiomas:** [English](docs/en/author-license-support.md) · [Português (Brasil)](docs/autor-licenca-e-suporte.md)
 
 ## Autor original
 
