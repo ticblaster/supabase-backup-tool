@@ -1,0 +1,39 @@
+{
+  "name": "supabase-backup-tool",
+  "version": "0.1.0",
+  "description": "CLI local para backup lógico de bancos Supabase e buckets de Storage",
+  "author": "Marcelo Ribeiro de Oliveira Mello <ticblaster@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "supabase-backup": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "backup": "tsx src/index.ts backup",
+    "backup:db": "tsx src/index.ts backup-db",
+    "backup:storage": "tsx src/index.ts backup-storage",
+    "list-projects": "tsx src/index.ts list-projects",
+    "check": "tsx src/index.ts check",
+    "restore:print": "tsx src/index.ts restore-print",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test src/**/*.test.ts"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "execa": "^9.5.2",
+    "fs-extra": "^11.3.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.13.10",
+    "supabase": "^2.108.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}

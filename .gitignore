@@ -1,0 +1,8 @@
+.env
+backups/
+backup.config.json
+.tmp/
+*.log
+node_modules/
+dist/
+*.tsbuildinfo

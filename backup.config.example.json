@@ -1,0 +1,38 @@
+{
+  "supabaseCli": "npx supabase",
+  "defaultProject": "geral-homologacao",
+  "backupRoot": "./backups",
+  "projects": {
+    "geral-homologacao": {
+      "projectRef": "izzitgselrzkxsqglcja",
+      "dbUrlEnvCandidates": [
+        "GERAL_HOMOLOGACAO_DB_URL_POOLER",
+        "GERAL_HOMOLOGACAO_DB_URL_DIRECT"
+      ],
+      "db": {
+        "engine": "pgdump",
+        "excludeTables": [
+          "storage.buckets_vectors",
+          "storage.vector_indexes"
+        ]
+      },
+      "storage": {
+        "mode": "rclone",
+        "remote": "supabase-geral",
+        "buckets": ["trip-receipts"],
+        "rcloneFlags": ["--s3-list-version", "2"]
+      }
+    },
+    "outro-projeto": {
+      "projectRef": "yyyyy",
+      "dbUrlEnv": "OUTRO_PROJETO_DB_URL",
+      "db": {
+        "engine": "supabase-cli"
+      },
+      "storage": {
+        "mode": "supabase-cli",
+        "buckets": ["documents", "avatars"]
+      }
+    }
+  }
+}
